@@ -7,7 +7,8 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 
-import chat.frame.Frame;
+import chat.frame.ChatRoomFrame;
+import chat.frame.LogInFrame;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -15,6 +16,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -22,10 +25,14 @@ import java.awt.SystemColor;
 import javax.swing.JPasswordField;
 
 public class LoginPanel extends JPanel {
-
+	
+	private LogInFrame loginFrame = LogInFrame.getObject();  // 로그인 프레임 가져오기
+	private JFrame chatRoomFrame;
+	
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	
 
 	/**
 	 * Create the panel.
@@ -51,13 +58,13 @@ public class LoginPanel extends JPanel {
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("아이디");
-		lblNewLabel_1.setFont(new Font("HY엽서M", Font.PLAIN, 20));
+		lblNewLabel_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		lblNewLabel_1.setBounds(173, 31, 75, 24);
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("비밀번호");
-		lblNewLabel_1_1.setFont(new Font("HY엽서M", Font.PLAIN, 20));
-		lblNewLabel_1_1.setBounds(173, 121, 104, 24);
+		lblNewLabel_1_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		lblNewLabel_1_1.setBounds(173, 115, 104, 24);
 		panel.add(lblNewLabel_1_1);
 		
 		JButton btnNewButton = new JButton("로그인Go!");
@@ -65,25 +72,28 @@ public class LoginPanel extends JPanel {
 		btnNewButton.setBackground(new Color(204, 255, 255));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				loginFrame.dispose();
+				chatRoomFrame = new ChatRoomFrame();
+				chatRoomFrame.setVisible(true);
 			}
 		});
-		btnNewButton.setFont(new Font("HY엽서L", Font.BOLD, 20));
+		btnNewButton.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		btnNewButton.setBounds(447, 65, 130, 125);
 		panel.add(btnNewButton);
 		
 		JLabel lblNewLabel_2 = new JLabel("Go!Bat의 회원이 아니라면?");
-		lblNewLabel_2.setFont(new Font("HY엽서M", Font.PLAIN, 15));
+		lblNewLabel_2.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		lblNewLabel_2.setBounds(14, 218, 263, 24);
 		panel.add(lblNewLabel_2);
 		
 		JButton btnNewButton_1 = new JButton("회원가입Go!");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Frame.showRegisterPanel();
+				loginFrame.showRegisterPanel();
 			}
 		});
 		btnNewButton_1.setBackground(new Color(240, 252, 255));
-		btnNewButton_1.setFont(new Font("HY엽서L", Font.BOLD, 12));
+		btnNewButton_1.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		btnNewButton_1.setBounds(12, 240, 104, 23);
 		panel.add(btnNewButton_1);
 		

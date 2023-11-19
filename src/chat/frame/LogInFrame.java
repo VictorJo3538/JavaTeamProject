@@ -16,49 +16,34 @@ import chat.login.RegisterPanel;
 
 import java.awt.CardLayout;
 
-public class Frame extends JFrame {
+public class LogInFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private static JPanel contentPane;
+	JPanel contentPane;
 	// CardLayout을 사용할 패널 생성
-    private static CardLayout cardLayout = new CardLayout();
-    private static JPanel cards = new JPanel(cardLayout);
-
-	// 어플리케이션 실행
-	public static void main(String[] args) {
-		// flatlaf 테마 적용
-		try {
-		    UIManager.setLookAndFeel( new FlatLightLaf() );
-		} catch( Exception ex ) {
-		    System.err.println( "Failed to initialize LaF" );
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Frame frame = new Frame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    CardLayout cardLayout = new CardLayout();
+    JPanel cards = new JPanel(cardLayout);
+    
+    private static LogInFrame staticFrame;  // 프레임을 담을 스태틱 변수
 
 	// 프레임 제작
-	public Frame() {
-		setTitle("고양이뱃살(Go!Bat)");
-		setResizable(false);  // 창변경금지
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public LogInFrame() {
+		staticFrame = this;
 		
 		// 스크린 사이즈 가져와서 프레임이 중앙으로 오게 설정
-		int frameWidth = 728, frameHeight = 560; // 기본 프레임 크기 설정
+		int frameWidth = 728, frameHeight = 600; // 기본 프레임 크기 설정
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - frameWidth) / 2;
 		int y = (screenSize.height - frameHeight) / 2;
+				
+		setTitle("고양이뱃살(Go!Bat)");
+		setResizable(false);  // 창변경금지
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(frameWidth, frameHeight);
+		setLocation(x, y);
 		
-		setBounds(x, y, 728, 612);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+//		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setSize(frameWidth, frameHeight);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
@@ -73,11 +58,16 @@ public class Frame extends JFrame {
 		
 	}
 	
-	public static void showRegisterPanel( ) {
+	public static LogInFrame getObject() {
+		return staticFrame;
+	}
+	
+	public void showRegisterPanel( ) {
 		cardLayout.show(cards, "RegisterPanel");
 	}
 	
-	public static void showLoginPanel() {
+	public void showLoginPanel() {
 		cardLayout.show(cards, "LoginPanel");
 	}
+
 }
