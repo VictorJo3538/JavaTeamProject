@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 
 import chat.frame.ChatRoomFrame;
+import chat.frame.FrameManager;
 import chat.frame.LogInFrame;
 
 import java.awt.Component;
@@ -25,10 +26,6 @@ import java.awt.SystemColor;
 import javax.swing.JPasswordField;
 
 public class LoginPanel extends JPanel {
-	
-	private LogInFrame loginFrame = LogInFrame.getObject();  // 로그인 프레임 가져오기
-	private JFrame chatRoomFrame;
-	
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JPasswordField passwordField;
@@ -72,9 +69,8 @@ public class LoginPanel extends JPanel {
 		btnNewButton.setBackground(new Color(204, 255, 255));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginFrame.dispose();
-				chatRoomFrame = new ChatRoomFrame();
-				chatRoomFrame.setVisible(true);
+				FrameManager.getLogInFrame().dispose();
+				FrameManager.getChatRoomFrame().setVisible(true);
 			}
 		});
 		btnNewButton.setFont(new Font("맑은 고딕", Font.BOLD, 20));
@@ -89,7 +85,7 @@ public class LoginPanel extends JPanel {
 		JButton btnNewButton_1 = new JButton("회원가입Go!");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginFrame.showRegisterPanel();
+				((LogInFrame) FrameManager.getLogInFrame()).showRegisterPanel();
 			}
 		});
 		btnNewButton_1.setBackground(new Color(240, 252, 255));

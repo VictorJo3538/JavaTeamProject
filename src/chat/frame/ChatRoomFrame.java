@@ -1,6 +1,8 @@
 package chat.frame;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,25 +15,25 @@ public class ChatRoomFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-    private static ChatRoomFrame staticFrame;  // 프레임을 담을 스태틱 변수
-
 	/**
 	 * Create the frame.
 	 */
 	public ChatRoomFrame() {
-		staticFrame = this;
+		// 스크린 사이즈 가져와서 프레임이 중앙으로 오게 설정
+		int frameWidth = 728, frameHeight = 600; // 기본 프레임 크기 설정
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (screenSize.width - frameWidth) / 2;
+		int y = (screenSize.height - frameHeight) / 2;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setSize(frameWidth, frameHeight);
+		setLocation(x, y);
+		
 		contentPane = new JPanel();
 
 		setContentPane(contentPane);
 		
 		JPanel chatRoomPanel = new ChatRoomPanel();
 		contentPane.add(chatRoomPanel);
-	}
-	
-	public ChatRoomFrame getObject() {
-		return staticFrame;
 	}
 }

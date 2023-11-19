@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -27,17 +28,15 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import chat.frame.FrameManager;
 import chat.frame.LogInFrame;
 
 public class RegisterPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private JTextField idField;
+	private JTextField nameField;
 	private JPasswordField passwordField;
-	private JTextField textField;
-	private JTextField textField_3;
-	private JPasswordField passwordField_1;
-	private JPasswordField passwordField_2;
-	
-	private LogInFrame loginFrame = LogInFrame.getObject();  // 로그인 프레임 가져오기
+	private JPasswordField passwordConfirmField;
 
 	/**
 	 * Create the panel.
@@ -58,63 +57,100 @@ public class RegisterPanel extends JPanel {
 		lblNewLabel.setIcon(new ImageIcon(LoginPanel.class.getResource("/Img/loginCat.png")));
 		panel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("아이디 입력");
-		lblNewLabel_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		lblNewLabel_1.setBounds(406, 318, 116, 24);
-		panel.add(lblNewLabel_1);
+		JLabel idLabel = new JLabel("아이디 입력");
+		idLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		idLabel.setBounds(406, 318, 116, 24);
+		panel.add(idLabel);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Arial", Font.PLAIN, 20));
-		textField.setBounds(406, 352, 262, 46);
-		panel.add(textField);
-		textField.setColumns(10);
+		idField = new JTextField();
+		idField.setFont(new Font("Arial", Font.PLAIN, 20));
+		idField.setBounds(406, 352, 262, 46);
+		panel.add(idField);
+		idField.setColumns(10);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("비밀번호 입력");
-		lblNewLabel_1_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		lblNewLabel_1_1.setBounds(57, 408, 162, 24);
-		panel.add(lblNewLabel_1_1);
+		JLabel passwordLabel = new JLabel("비밀번호 입력");
+		passwordLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		passwordLabel.setBounds(57, 408, 162, 24);
+		panel.add(passwordLabel);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("비밀번호 확인");
-		lblNewLabel_1_1_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		lblNewLabel_1_1_1.setBounds(406, 408, 162, 24);
-		panel.add(lblNewLabel_1_1_1);
+		JLabel passwordConfirmLabel = new JLabel("비밀번호 확인");
+		passwordConfirmLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		passwordConfirmLabel.setBounds(406, 408, 162, 24);
+		panel.add(passwordConfirmLabel);
 		
-		textField_3 = new JTextField();
-		textField_3.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		textField_3.setColumns(10);
-		textField_3.setBounds(57, 352, 262, 46);
-		panel.add(textField_3);
+		nameField = new JTextField();
+		nameField.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		nameField.setColumns(10);
+		nameField.setBounds(57, 351, 262, 46);
+		panel.add(nameField);
 		
-		JLabel lblNewLabel_1_2 = new JLabel("사용자명");
-		lblNewLabel_1_2.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		lblNewLabel_1_2.setBounds(57, 318, 116, 24);
-		panel.add(lblNewLabel_1_2);
+		JLabel nameLabel = new JLabel("사용자명");
+		nameLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		nameLabel.setBounds(57, 318, 116, 24);
+		panel.add(nameLabel);
 		
-		JButton btnNewButton_1_1 = new JButton("취소");
-		btnNewButton_1_1.addActionListener(new ActionListener() {
+		passwordField = new JPasswordField();
+		passwordField.setBounds(57, 442, 262, 46);
+		panel.add(passwordField);
+		
+		passwordConfirmField = new JPasswordField();
+		passwordConfirmField.setBounds(406, 442, 262, 46);
+		panel.add(passwordConfirmField);
+		
+		JLabel passwordMismatchWarnginLabel = new JLabel("비밀번호가 일치하지 않습니다!");
+		passwordMismatchWarnginLabel.setForeground(new Color(255, 0, 0));
+		passwordMismatchWarnginLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		passwordMismatchWarnginLabel.setBounds(487, 497, 181, 15);
+		passwordMismatchWarnginLabel.setVisible(false);
+		panel.add(passwordMismatchWarnginLabel);
+		
+		JLabel emptyWarningLabel = new JLabel("입력 칸을 모두 채워주세요");
+		emptyWarningLabel.setForeground(new Color(255, 0, 0));
+		emptyWarningLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		emptyWarningLabel.setBounds(487, 497, 181, 15);
+		emptyWarningLabel.setVisible(false);
+		panel.add(emptyWarningLabel);
+		
+		JButton confirmButton = new JButton("완료");
+		confirmButton.setBounds(457, 512, 100, 38);
+		panel.add(confirmButton);
+		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginFrame.showLoginPanel();
+				// 경고문구 초기화
+				emptyWarningLabel.setVisible(false);
+				passwordMismatchWarnginLabel.setVisible(false);
+				
+				String name, id;
+				char[] passwordConfirm;
+				char[] password;
+				
+				name = nameField.getText();
+				id = idField.getText();
+				password = passwordField.getPassword();
+				passwordConfirm = passwordConfirmField.getPassword();
+				
+				if(name.length() == 0 || id.length() == 0 || password.length == 0 || passwordConfirm.length == 0) {
+					emptyWarningLabel.setVisible(true);
+				}
+				else if(Arrays.equals(password, passwordConfirm) && password.length > 0) {
+					System.out.println("여기에 회원가입 구성");
+				}
+				else {
+					passwordMismatchWarnginLabel.setVisible(true);
+				}
 			}
 		});
-		btnNewButton_1_1.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		btnNewButton_1_1.setBounds(569, 512, 100, 38);
-		panel.add(btnNewButton_1_1);
+		confirmButton.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		
-		JButton btnNewButton_1 = new JButton("완료");
-		btnNewButton_1.setBounds(457, 512, 100, 38);
-		panel.add(btnNewButton_1);
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton cancelButton = new JButton("취소");
+		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				((LogInFrame) FrameManager.getLogInFrame()).showLoginPanel();
 			}
 		});
-		btnNewButton_1.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		cancelButton.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		cancelButton.setBounds(569, 512, 100, 38);
+		panel.add(cancelButton);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(57, 442, 262, 46);
-		panel.add(passwordField_1);
-		
-		passwordField_2 = new JPasswordField();
-		passwordField_2.setBounds(406, 442, 262, 46);
-		panel.add(passwordField_2);
 	}
 }

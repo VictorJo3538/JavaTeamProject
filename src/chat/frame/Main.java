@@ -2,6 +2,7 @@ package chat.frame;
 
 import java.awt.EventQueue;
 
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -19,8 +20,8 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LogInFrame frame = new LogInFrame();
-					frame.setVisible(true);
+					FrameManager.init();  // 프레임매니저 초기화
+					FrameManager.getLogInFrame().setVisible(true);  // 로그인 프레임 보이기
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

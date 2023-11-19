@@ -23,12 +23,8 @@ public class LogInFrame extends JFrame {
     CardLayout cardLayout = new CardLayout();
     JPanel cards = new JPanel(cardLayout);
     
-    private static LogInFrame staticFrame;  // 프레임을 담을 스태틱 변수
-
 	// 프레임 제작
 	public LogInFrame() {
-		staticFrame = this;
-		
 		// 스크린 사이즈 가져와서 프레임이 중앙으로 오게 설정
 		int frameWidth = 728, frameHeight = 600; // 기본 프레임 크기 설정
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -56,10 +52,6 @@ public class LogInFrame extends JFrame {
 		
 		contentPane.add(cards);
 		
-	}
-	
-	public static LogInFrame getObject() {
-		return staticFrame;
 	}
 	
 	public void showRegisterPanel( ) {
